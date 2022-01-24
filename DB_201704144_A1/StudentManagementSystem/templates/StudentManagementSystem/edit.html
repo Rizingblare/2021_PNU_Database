@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>김정도201704144_EDIT</title>
+        <style type="text/css">
+            h1
+            {
+                background-color: royalblue;
+                font-size: large;
+                color: white;
+                text-align: center;
+            }
+            #navyBtn
+            {
+                border-radius: 1px;
+                color: white;
+                background-color: black;
+            }
+        </style>
+        <script type="text/javascript"></script>
+    </head>
+<body>
+    <h1>Student Management System</h1>
+    <br>
+    <h2>Update record</h2>
+    <form action="./editTodo/" method="post">
+        {% csrf_token %}
+        <label>ID: <input type="text" name="editID" value="{{editStu.id}}"></label><br>
+        <label>Firstname: <input type="text" name="editFirstName" value="{{editStu.firstname}}"></label><br>
+        <label>Secondname: <input type="text" name="editSecondName" value="{{editStu.secondname}}"></label><br>
+        <label>Age: <input type="text" name="editAge" value="{{editStu.age}}"></label><br>
+        <label>Major: <input type="text" name="editMajor" value="{{editStu.major}}"></label><br>
+        <label>Address: <input type="text" name="editAddress" value="{{editStu.address}}"></label><br>
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

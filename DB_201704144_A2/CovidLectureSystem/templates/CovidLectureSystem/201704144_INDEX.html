@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>201704144_A2</title>
+        <style type="text/css">
+            #Container
+            {
+                width: 100%;
+            }
+            #tableContainer
+            {
+                width: 50%;
+                float: left;
+            }
+            #queryContainer
+            {
+                width: 50%;
+                float: right;
+            }
+            table,th,td
+            {
+                border: 1px solid;
+                text-align: center;
+            }
+            table
+            {
+                border-collapse: collapse;
+            }
+        </style>
+        <script type="text/javascript">
+            var requestOptions;
+            var stuRows;
+            var profRows;
+            var cntRows;
+            var covidRows;
+            var stu_ptr;
+            var prof_ptr;
+            var cnt_ptr;
+            var covid_ptr;
+            var q1_tbody;
+            var q2_tbody;
+            var q3_tbody;
+            var q4_tbody;
+            var q5_tbody;
+
+            function AddStu() {
+                var cur_stuRow = stuRows[stu_ptr].split(',');
+                requestOptions = {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{csrf_token}}",
+                    },
+                    body : JSON.stringify({
+                        "stu_ID" : cur_stuRow[0],
+                        "stu_name" : cur_stuRow[1],
+                        "stu_score" : cur_stuRow[2],
+                        "stu_county" : cur_stuRow[3],
+                    })
+                }
+
+                fetch("/addStu/",requestOptions)
+                .then(res=>res.json())
+                .then(function(res){         
+                    var stu_tbody = document.getElementById("stu_tbody");
+                    var tr = "";
+                    tr += "<tr>"
+                    tr += "<td>"+cur_stuRow[0]+"</td>";
+                    tr += "<td>"+cur_stuRow[1]+"</td>";
+                    tr += "<td>"+cur_stuRow[2]+"</td>";
+                    tr += "<td>"+cur_stuRow[3]+"</td>";
+                    tr += "</tr>";
+                    stu_tbody.innerHTML += tr;
+                    
+                    console.log(res);
+                    tr = "";
+                    for(var idx = 0; idx < res['Query1'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query1'][idx]['countyName']+"</td>";
+                        tr += "<td>"+res['Query1'][idx]['averageScore']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q1_tbody.innerHTML = tr;
+
+                    tr = "";
+                    for(var idx = 0; idx < res['Query2'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query2'][idx]['cityName']+"</td>";
+                        tr += "<td>"+res['Query2'][idx]['averageScore']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q2_tbody.innerHTML = tr;
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query3'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query3'][idx]['professorName']+"</td>";
+                        tr += "<td>"+res['Query3'][idx]['studentName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q3_tbody.innerHTML = tr;
+            
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query4'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query4'][idx]['professorName']+"</td>";
+                        tr += "<td>"+res['Query4'][idx]['studentName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q4_tbody.innerHTML = tr;
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query5'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query5'][idx]['studentName']+"</td>";
+                        tr += "<td>"+res['Query5'][idx]['cityName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q5_tbody.innerHTML = tr;
+                    
+                    stu_ptr++;
+                })
+                .catch(err=>console.log(err));
+            }
+
+            function AddProf() {
+                var cur_profRow = profRows[prof_ptr].split(',');
+                requestOptions = {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{csrf_token}}",
+                    },
+                    body : JSON.stringify({
+                        "prof_ID" : cur_profRow[0],
+                        "prof_name" : cur_profRow[1],
+                        "prof_age" : cur_profRow[2],
+                        "prof_county" : cur_profRow[3],
+                    })
+                }
+
+                fetch("/addProf/",requestOptions)
+                .then(res=>res.json())
+                .then(function(res){         
+                    var prof_tbody = document.getElementById("prof_tbody");
+                    var tr = "";
+                    tr += "<tr>"
+                    tr += "<td>"+cur_profRow[0]+"</td>";
+                    tr += "<td>"+cur_profRow[1]+"</td>";
+                    tr += "<td>"+cur_profRow[2]+"</td>";
+                    tr += "<td>"+cur_profRow[3]+"</td>";
+                    tr += "</tr>";
+                    prof_tbody.innerHTML += tr;
+                    
+                    console.log(res);
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query3'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query3'][idx]['professorName']+"</td>";
+                        tr += "<td>"+res['Query3'][idx]['studentName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q3_tbody.innerHTML = tr;
+                    
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query4'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query4'][idx]['professorName']+"</td>";
+                        tr += "<td>"+res['Query4'][idx]['studentName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q4_tbody.innerHTML = tr;
+                    
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query5'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query5'][idx]['studentName']+"</td>";
+                        tr += "<td>"+res['Query5'][idx]['cityName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q5_tbody.innerHTML = tr;
+                    
+
+                    prof_ptr++;
+                })
+                .catch(err=>console.log(err));                
+            }
+
+            function AddCnt() {
+                var cur_cntRow = cntRows[cnt_ptr].split(',');
+                requestOptions = {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{csrf_token}}",
+                    },
+                    body : JSON.stringify({
+                        "cnt_name" : cur_cntRow[0],
+                        "cnt_population" : cur_cntRow[1],
+                        "cnt_city" : cur_cntRow[2],
+                    })
+                }
+
+                fetch("/addCnt/",requestOptions)
+                .then(res=>res.json())
+                .then(function(res){         
+                    var cnt_tbody = document.getElementById("cnt_tbody");
+                    var tr = "";
+                    tr += "<tr>"
+                    tr += "<td>"+cur_cntRow[0]+"</td>";
+                    tr += "<td>"+cur_cntRow[1]+"</td>";
+                    tr += "<td>"+cur_cntRow[2]+"</td>";
+                    tr += "</tr>";
+                    cnt_tbody.innerHTML += tr;
+                    
+                    console.log(res);
+                    tr = "";
+                    for(var idx = 0; idx < res['Query2'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query2'][idx]['cityName']+"</td>";
+                        tr += "<td>"+res['Query2'][idx]['averageScore']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q2_tbody.innerHTML = tr;
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query4'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query4'][idx]['professorName']+"</td>";
+                        tr += "<td>"+res['Query4'][idx]['studentName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q4_tbody.innerHTML = tr;
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query5'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query5'][idx]['studentName']+"</td>";
+                        tr += "<td>"+res['Query5'][idx]['cityName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q5_tbody.innerHTML = tr;
+                    
+                    cnt_ptr++;
+                })
+                .catch(err=>console.log(err));
+            }
+
+            function AddCovid() {
+                var cur_covidRow = covidRows[covid_ptr].split(',');
+                requestOptions = {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{csrf_token}}",
+                    },
+                    body : JSON.stringify({
+                        "covid_id" : cur_covidRow[0],
+                        "covid_city" : cur_covidRow[1],
+                    })
+                }
+
+                fetch("/addCovid/",requestOptions)
+                .then(res=>res.json())
+                .then(function(res){         
+                    var covid_tbody = document.getElementById("covid_tbody");
+                    var tr = "";
+                    tr += "<tr>"
+                    tr += "<td>"+cur_covidRow[0]+"</td>";
+                    tr += "<td>"+cur_covidRow[1]+"</td>";
+                    tr += "</tr>";
+                    covid_tbody.innerHTML += tr;
+                    
+                    console.log(res);
+                    
+                    tr = "";
+                    for(var idx = 0; idx < res['Query5'].length; idx++){
+                        tr += "<tr>";
+                        tr += "<td>"+res['Query5'][idx]['studentName']+"</td>";
+                        tr += "<td>"+res['Query5'][idx]['cityName']+"</td>";
+                        tr += "</tr>";
+                    }
+                    q5_tbody.innerHTML = tr;
+                    
+                    covid_ptr++;
+                })
+                .catch(err=>console.log(err));
+            }
+
+            function start() {
+                requestOptions = {
+                    method : "DELETE",
+                    headers : {
+                        "X-CSRFToken": '{{csrf_token}}',
+                    },
+                }
+                fetch("/clearStu/",requestOptions)
+                .catch(err=>console.log(err));
+
+                fetch("/clearProf/",requestOptions)
+                .catch(err=>console.log(err));
+
+                fetch("/clearCnt/",requestOptions)
+                .catch(err=>console.log(err));
+                
+                fetch("/clearCovid/",requestOptions)
+                .catch(err=>console.log(err));
+
+
+                fetch("/static/students.csv")
+                .then(res=>res.text())
+                .then(function(res){
+                    stuRows = res.split(/\r?\n|\r/);
+                })
+                .catch(err=>console.log(err));
+
+                fetch("/static/professors.csv")
+                .then(res=>res.text())
+                .then(function(res){
+                    profRows = res.split(/\r?\n|\r/);
+                })
+                .catch(err=>console.log(err));
+                
+                fetch("/static/counties.csv")
+                .then(res=>res.text())
+                .then(function(res){
+                    cntRows = res.split(/\r?\n|\r/);
+                })
+                .catch(err=>console.log(err));
+
+                fetch("/static/covid.csv")
+                .then(res=>res.text())
+                .then(function(res){
+                    covidRows = res.split(/\r?\n|\r/);
+                })
+                .catch(err=>console.log(err));
+
+                stu_ptr = 0;
+                prof_ptr = 0;
+                cnt_ptr = 0;
+                covid_ptr = 0;
+                var stdBtn = document.getElementById("stuBtn");
+                var profBtn = document.getElementById("profBtn");
+                var cntBtn = document.getElementById("cntBtn");
+                var covidBtn = document.getElementById("covidBtn");
+                stuBtn.addEventListener("click",AddStu);
+                profBtn.addEventListener("click",AddProf);
+                cntBtn.addEventListener("click",AddCnt);
+                covidBtn.addEventListener("click",AddCovid);
+
+                q1_tbody = document.getElementById("q1_tbody");
+                q2_tbody = document.getElementById("q2_tbody");
+                q3_tbody = document.getElementById("q3_tbody");
+                q4_tbody = document.getElementById("q4_tbody");
+                q5_tbody = document.getElementById("q5_tbody");
+            }
+            
+        </script>
+    </head>
+    <body onload="start()">
+        <div id="Container">
+            <div id="tableContainer">
+                <div id="stu_table">
+                    <h2>Students table</h2>
+                    <button id="stuBtn">+ Add records from csv</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>studentID</th>
+                                <th>name</th>
+                                <th>score</th>
+                                <th>county</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stu_tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="prof_table">
+                    <h2>Professors table</h2>
+                    <button id="profBtn">+ Add records from csv</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>facultyID</th>
+                                <th>name</th>
+                                <th>age</th>
+                                <th>county</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prof_tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cnt_table">
+                    <h2>Counties table</h2>
+                    <button id="cntBtn">+ Add records from csv</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>countyName</th>
+                                <th>population</th>
+                                <th>city</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cnt_tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="covid_table">
+                    <h2>COVID table</h2>
+                    <button id="covidBtn">+ Add records from csv</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>patientID</th>
+                                <th>city</th>
+                            </tr>
+                        </thead>
+                        <tbody id="covid_tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="queryContainer">
+                <div id="query1">
+                    <h2>Query #1:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>countyName</th>
+                                <th>averageScore</th>
+                        </tr>
+                        </thead>
+                    <tbody id="q1_tbody">
+                    </tbody>
+                    </table>
+                </div>
+                <div id="query2">
+                    <h2>Query #2:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>cityName</th>
+                                <th>averageScore</th>
+                        </tr>
+                        </thead>
+                    <tbody id="q2_tbody">
+                    </tbody>
+                    </table>
+                </div>
+                <div id="query3">
+                    <h2>Query #3:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>professorName</th>
+                                <th>studentName</th>
+                        </tr>
+                        </thead>
+                    <tbody id="q3_tbody">
+                    </tbody>
+                    </table>
+                </div>
+                <div id="query4">
+                    <h2>Query #4:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>professorName</th>
+                                <th>studentScore</th>
+                        </tr>
+                        </thead>
+                    <tbody id="q4_tbody">
+                    </tbody>
+                    </table>
+                </div>
+                <div id="query5">
+                    <h2>Query #5:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>studentName</th>
+                                <th>cityName</th>
+                        </tr>
+                        </thead>
+                    <tbody id="q5_tbody">
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

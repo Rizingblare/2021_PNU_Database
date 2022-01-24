@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>김정도201704144_ADD</title>
+        <style type="text/css">
+            h1
+            {
+                background-color: royalblue;
+                font-size: large;
+                color: white;
+                text-align: center;
+            }
+            #navyBtn
+            {
+                border-radius: 1px;
+                color: white;
+                background-color: black;
+            }
+        </style>
+        <script type="text/javascript"></script>
+    </head>
+<body>
+    <h1>Student Management System</h1>
+    <br>
+    <h2>Add new record</h2>
+    <form action="./createTodo/" method="post">
+        {% csrf_token %}
+        <label>ID: <input type="text" name="addID"></label><br>
+        <label>Firstname: <input type="text" name="addFirstName"></label><br>
+        <label>Secondname: <input type="text" name="addSecondName"></label><br>
+        <label>Age: <input type="text" name="addAge"></label><br>
+        <label>Major: <input type="text" name="addMajor"></label><br>
+        <label>Address: <input type="text" name="addAddress"></label><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

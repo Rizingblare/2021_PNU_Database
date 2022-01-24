@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>201704144</title>
+        <style type="text/css">
+            h1
+            {
+                background-color: royalblue;
+                font-size: large;
+                color: white;
+                text-align: center;
+            }
+            table,th,td
+            {
+                border: 1px solid;
+                text-align: center;
+            }
+            table
+            {
+                border-collapse: collapse;
+            }
+            td form
+            {
+                display: inline;
+            }
+            .addBtn
+            {
+                position: absolute;
+                left: 50%;
+            }
+        </style>
+        <script type="text/javascript"></script>
+    </head>
+<body>
+    <div>
+        <h1>Student Management System</h1>
+    </div>
+    <br>
+    <div>
+        <button type="button" class="addBtn" onclick="location.href='./create/'">+ Add New Record</button>
+        <br>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="Search">
+            <button class="navyBtn">Search by name</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <table>
+        <thead>
+            <th>ID</th>
+            <th>First name</th>
+            <th>Second name</th>
+            <th>Age</th>
+            <th>Major</th>
+            <th>Address</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for student in studentAll %}
+            <tr>
+                <td>{{student.id}}</td>
+                <td>{{student.firstname}}</td>
+                <td>{{student.secondname}}</td>
+                <td>{{student.age}}</td>
+                <td>{{student.major}}</td>
+                <td>{{student.address}}</td>
+                <td class="btnCell">
+                    <form action="./edit/" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="editID" value="{{student.id}}">
+                        <button type="submit" class="navyBtn">% Edit Record</button>
+                    </form>
+                    <form action="./delete/" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="deleteID" value="{{student.id}}">
+                        <button type="submit" class="navyBtn">& Delete Record</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>
